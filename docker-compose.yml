@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  db:
+    image: postgres
+    container_name: db_auctions
+    environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgrespassword
+        - POSTGRES_DB=auctions
+    ports:
+        - 5433:5432
+    networks:
+        - carsties
+    volumes:
+        - pgdata:/var/lib/postgresql/data
+   
+  pgadmin:
+    image: dpage/pgadmin4 
+    container_name: pgadmin_auctions
+    environment:
+        - PGADMIN_DEFAULT_EMAIL=raendy.elvicar@gmail.com
+        - PGADMIN_DEFAULT_PASSWORD=postgrespassword
+    ports:
+        - 8888:80  
+    networks:
+        - carsties
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+  # myapp:
+  #   image: auctionservice:1.0.1
+  #   container_name: auction_service_api
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Development  # Set any environment variables your app needs
+  #     - ConnectionStrings__DefaultConnection=Host=db_auctions;Port=5432;Username=postgres;Password=postgrespassword;Database=auctions
+  #   ports:
+  #     - 32778:8081
+  #   networks:
+  #     - carsties
+  #   depends_on:
+  #     - db
+
+volumes:
+    pgdata:
+    pgadmin-data:
+    
+networks:
+    # The presence of these objects is sufficient to define them
+    carsties: {}
