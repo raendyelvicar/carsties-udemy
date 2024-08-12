@@ -1,31 +1,44 @@
-version: '3.8'
+version: "3.8"
 services:
   db:
     image: postgres
     container_name: db_auctions
     environment:
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=postgrespassword
-        - POSTGRES_DB=auctions
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgrespassword
+      - POSTGRES_DB=auctions
     ports:
-        - 5433:5432
+      - 5433:5432
     networks:
-        - carsties
+      - carsties
     volumes:
-        - pgdata:/var/lib/postgresql/data
-   
+      - pgdata:/var/lib/postgresql/data
+
   pgadmin:
-    image: dpage/pgadmin4 
+    image: dpage/pgadmin4
     container_name: pgadmin_auctions
     environment:
-        - PGADMIN_DEFAULT_EMAIL=raendy.elvicar@gmail.com
-        - PGADMIN_DEFAULT_PASSWORD=postgrespassword
+      - PGADMIN_DEFAULT_EMAIL=raendy.elvicar@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=postgrespassword
     ports:
-        - 8888:80  
+      - 8888:80
     networks:
-        - carsties
+      - carsties
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+
+  mongodb:
+    image: mongo
+    container_name: mongo_auctions
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=mongopw
+    ports:
+      - 27017:27017
+    networks:
+      - carsties
+    volumes:
+      - mongodata:/var/lib/mongodb/data
 
   # myapp:
   #   image: auctionservice:1.0.1
@@ -41,9 +54,10 @@ services:
   #     - db
 
 volumes:
-    pgdata:
-    pgadmin-data:
-    
+  pgdata:
+  pgadmin-data:
+  mongodata:
+
 networks:
-    # The presence of these objects is sufficient to define them
-    carsties: {}
+  # The presence of these objects is sufficient to define them
+  carsties: {}
